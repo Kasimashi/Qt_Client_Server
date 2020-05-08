@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1">
+    <meta charset="utf-8">
+    <title> Géolocalisation avec carte Open Street Map </title>
+	<script type="text/javascript" src="data.js"></script>
+
+	<!--Mise en forme de l’élément div qui va recueillir la carte -->
+	<style>
+	#carte{height:600px; width:800px ; margin : 20px ; }
+	</style>
+
+	<!-- Chargement du style leaflet -->
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
+
+	<!-- Chargement de l’API Leaflet pour charger les cartes OpenStreetMap -->
+	<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+</head>
+<body>
+<div id="carte"></div>
+<script  type="text/javascript">
+if (navigator.geolocation) {
+	succesGeo();
+} else {
+	alert("Pas de prise en charge de la géolocalisation.");
+}
+
+function succesGeo() {
+	var lat = 46.1419;
+	var lng = -1.1655;
+	var map = L.map("carte").setView([lat, lng], 5);
+	var list_mmsi = [];
+	var pos = -1;
+	var vcolor;
+	var str_temp;
+	var n1;
+	var n2;
+	var n3;
+	var r;
+	var g;
+	var b;
+	L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		maxZoom: 19,
+		attribution: '©<a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+	}).addTo(map);
+	var mon_icone = L.icon({iconUrl: 'b_navig.png', iconSize: [30, 30],});
+	var markers = new L.featureGroup();
+	//for (var i = navires.length-1; i >=0 ; i--) {
+	for (var i = data_ais.length-1; i >=0 ; i--) {
+		var navire = data_ais[i];
+		pos = list_mmsi.indexOf(navire[0]);
+		n2 = navire[2]; n3 = navire[4];
+		if (pos == -1){
+			list_mmsi.push(navire[0]);
+			marker = new L.marker([n2, n3], {icon: mon_icone}) .addTo(map) .bindPopup(navire[5]);
+			markers.addLayer(marker);
+		}
+	}
+	markers.on('mouseover', function(e){ e.layer.openPopup(); })
+		   .on('mouseout', function(e){ e.layer.closePopup(); });
+	map.addLayer(markers);
+	map.fitBounds(markers.getBounds());
+	for (var i = 1; i < list_mmsi.length ; i++){
+		str_temp = 'v_' + list_mmsi[i];
+		var tabposition = eval(str_temp); 
+		console.log(tabposition);
+		r = Math.floor(Math.random() * 255); g = Math.floor(Math.random() * 255); b = Math.floor(Math.random() * 255);
+		vcolor= "rgb("+r+" ,"+g+","+ b+")"; 
+		var polyline = L.polyline(tabposition, {color: vcolor}).addTo(map);
+	}
+}
+</script>
+</body>
+</html>
