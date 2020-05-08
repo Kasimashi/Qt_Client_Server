@@ -4,8 +4,3 @@ Cette application a été développé dans le but de décoder des trames AIS via
 
 Application développée en language C++ en utilisant le Framework QT5
 
-Test1
-
-Test2
-
-Test3
