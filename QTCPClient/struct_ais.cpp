@@ -145,6 +145,7 @@ QString struct_ais::get_desc_ais(bool v_fich){
 struct_ais::struct_ais(unsigned char canal,QString v_ais)
 {
     int v_eb6;
+    (void)canal;
     tbit.resize(1024); //taille max data bin du message AIS (il peut y en avoir plus d'un)
     tbit.fill(false); //Tous les bits du tableau à 0
     qint32 postbit=0; //Lecture du bit en cours

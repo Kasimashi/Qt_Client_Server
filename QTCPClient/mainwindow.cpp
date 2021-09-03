@@ -204,7 +204,7 @@ void MainWindow::on_actionOuvrir_un_fichier_AIS_txt_triggered()
             //d_ais ->nb =0;
             //posais->nb = 0;
             QTextStream flux(&fichier);
-            qDebug() << "Lecture du fichier en courss";
+            qDebug() << "Lecture du fichier en cours";
             while(!flux.atEnd()){
                 v_ligne = flux.readLine();
                 l_1 = v_ligne.split(',');
